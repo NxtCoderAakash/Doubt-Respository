@@ -2,12 +2,16 @@ import PlayButton from '../PlayButton'
 import {PlayContainer} from './styledComponents'
 
 const Play = props => {
-  const {choicesList} = props
+  const {choicesList, setSelectionUser} = props
 
   return (
-    <PlayContainer>
+    <PlayContainer as="ul">
       {choicesList.map(item => (
-        <PlayButton key={item.id} data={item} />
+        <PlayButton
+          key={item.id}
+          data={item}
+          setSelectionUser={setSelectionUser}
+        />
       ))}
     </PlayContainer>
   )

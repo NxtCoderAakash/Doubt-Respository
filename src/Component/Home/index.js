@@ -3,7 +3,7 @@ import ResultHeader from '../ResultHeader'
 import Play from '../Play'
 import Rules from '../Rules'
 import GameResultView from '../GameResultView'
-import GameContext from '../../context/GameContext'
+// import GameContext from '../../context/GameContext'
 import {HomeContainer, RulesContainer} from './styledComponents'
 
 class Home extends Component {
@@ -16,8 +16,9 @@ class Home extends Component {
   }
 
   setSelectionUser = id => {
-    const randomNum = Math.round(Math.random() * 2, 0)
     const {choicesList} = this.props
+    const randomNum = Math.floor(Math.random() * choicesList.length)
+
     this.setState(
       {userSelection: id, computerSelection: choicesList[randomNum].id},
       this.setResultAndScore,
@@ -78,25 +79,40 @@ class Home extends Component {
     const {choicesList} = this.props
 
     return (
-      <GameContext.Provider
-        value={{
-          userSelection,
-          computerSelection,
-          setSelectionUser: this.setSelectionUser,
-          result,
-          score,
-          choicesList,
-          setPlayAgain: this.setPlayAgain,
-        }}
-      >
-        <HomeContainer>
-          <ResultHeader />
-          {showResult ? <GameResultView /> : <Play choicesList={choicesList} />}
-          <RulesContainer>
-            <Rules />
-          </RulesContainer>
-        </HomeContainer>
-      </GameContext.Provider>
+      //   <GameContext.Provider
+      //     value={{
+      //       userSelection,
+      //       computerSelection,
+      //       setSelectionUser: this.setSelectionUser,
+      //       result,
+      //       score,
+      //       choicesList,
+      //       setPlayAgain: this.setPlayAgain,
+      //     }}
+      //   >
+      <HomeContainer>
+        <ResultHeader score={score} />
+        {showResult && (
+          <GameResultView
+            result={result}
+            userSelection={userSelection}
+            computerSelection={computerSelection}
+            setPlayAgain={this.setPlayAgain}
+            choicesList={choicesList}
+          />
+        )}
+
+        {!showResult && (
+          <Play
+            setSelectionUser={this.setSelectionUser}
+            choicesList={choicesList}
+          />
+        )}
+        <RulesContainer>
+          <Rules />
+        </RulesContainer>
+      </HomeContainer>
+      //   </GameContext.Provider>
     )
   }
 }
